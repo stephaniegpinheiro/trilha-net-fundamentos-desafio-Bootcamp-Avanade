@@ -18,24 +18,37 @@ namespace DesafioFundamentos.Models
         public void AdicionarVeiculo()
         {
             Console.WriteLine("Digite a placa do veículo para estacionar:");
-            veiculos.Add(Console.ReadLine().ToUpper());
+            string placa = Console.ReadLine().ToUpper();
+
+            if (placa.Length != 7)
+            {
+                Console.WriteLine("O número da placa não corresponde a uma placa válida. O número da placa deve conter 7 digitos.");
+                return;
+            }
+
+            veiculos.Add(placa);
             Console.WriteLine("Veículo Cadastrado com sucesso!\n");
         }
 
         public void RemoverVeiculo()
         {
             Console.WriteLine("Digite a placa do veículo para remover:");
-            string placa = Convert.ToString(Console.ReadLine());
+            string placa = Console.ReadLine().ToUpper();
             
             if (veiculos.Any(x => x.ToUpper() == placa.ToUpper()))
             {
                 Console.WriteLine("Digite a quantidade de horas que o veículo permaneceu estacionado:");
-                int horas = Convert.ToInt32(Console.ReadLine());
-                decimal valorTotal = precoInicial + precoPorHora * (horas - 1); 
-               
-                veiculos.Remove(placa);
+                if (int.TryParse(Console.ReadLine(), out int horas))
+                {
+                    decimal valorTotal = precoInicial + precoPorHora * (horas - 1);                
+                    veiculos.Remove(placa);
 
-                Console.WriteLine($"O veículo {placa} foi removido e o preço total foi de: R$ {valorTotal}");
+                    Console.WriteLine($"O veículo {placa} foi removido e o preço total foi de: R$ {valorTotal}");
+                }
+                else
+                {
+                    Console.WriteLine("Quantidade de horas inválida.");
+                }               
             }
             else
             {
